@@ -17,12 +17,15 @@ namespace calculaJuros.Controllers
         }
 
         [HttpGet]
-        public string Get([FromQuery] CalculaJurosModel body)
-        {          
-            var serviceCalculaJuros = new JurosCompostos(_configuration);
-            var taxaJuros = serviceCalculaJuros.BuscaTaxaJuros();
+        public CalculaJurosResponse Get([FromQuery] CalculaJurosModel body)
+        {
+            var serviceCalculaJuros = new JurosCompostos(_configuration);            
 
-            return serviceCalculaJuros.CalculaValorFinalJurosCompostos(body.ValorInicial, body.QuantidadeDeMeses, taxaJuros);           
+            return new CalculaJurosResponse
+            {
+                Resultado = serviceCalculaJuros.CalculaValorFinalJurosCompostos(body.ValorInicial, body.QuantidadeDeMeses, serviceCalculaJuros.BuscaTaxaJuros())
+            };
         }
     }
 }
+    
