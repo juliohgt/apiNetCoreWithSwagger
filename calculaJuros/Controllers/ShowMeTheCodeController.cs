@@ -15,7 +15,7 @@ namespace calculaJuros.Controllers
         [HttpGet]
         public string Get()
         {
-            return "";
+            return "https://github.com/juliohgt/apiNetCoreWithSwagger.git";
         }
     }
 }
