@@ -10,22 +10,25 @@ namespace calculaJuros.Controllers
     public class CalculaJurosController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly JurosCompostos _jurosCompostos;
+        private readonly IntegracaoTaxaJuros _integracaoTaxaJuros;
 
-        public CalculaJurosController(IConfiguration configuration)
+        public CalculaJurosController(IConfiguration configuration, JurosCompostos jurosCompostos, IntegracaoTaxaJuros integracaoTaxaJuros)
         {
             _configuration = configuration;
+            _jurosCompostos = jurosCompostos;
+            _integracaoTaxaJuros = integracaoTaxaJuros;
         }
 
         [HttpGet]
         public CalculaJurosResponse Get([FromQuery] CalculaJurosModel body)
         {
-            var serviceCalculaJuros = new JurosCompostos(_configuration);            
+            var taxaDeJuros = _integracaoTaxaJuros.BuscarTaxaJuros(_configuration["urlApiTaxaJuros"]);
 
             return new CalculaJurosResponse
             {
-                Resultado = serviceCalculaJuros.CalculaValorFinalJurosCompostos(body.ValorInicial, body.QuantidadeDeMeses, serviceCalculaJuros.BuscaTaxaJuros())
+                Resultado = _jurosCompostos.CalcularJurosCompostos(body.ValorInicial, body.QuantidadeDeMeses, taxaDeJuros)
             };
         }
     }
 }
-    

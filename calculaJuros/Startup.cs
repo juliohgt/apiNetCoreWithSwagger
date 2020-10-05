@@ -1,3 +1,5 @@
+using calculaJuros.Service;
+using calculaJuros.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,10 @@ namespace calculaJuros
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddTransient<JurosCompostos>();
+            services.AddTransient<IntegracaoTaxaJuros>();
+            services.AddTransient<RestRequests>();
 
             services.AddSwaggerGen(options =>
             {
